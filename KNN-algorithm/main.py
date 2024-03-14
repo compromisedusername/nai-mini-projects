@@ -41,7 +41,9 @@ def get_verdiction(vectors, dict, k):
     count_attribut = {}
     for i in range(0, k):
         count_attribut[dict[vectors[i]]] = count_attribut.get(dict[vectors[i]], 0) + 1
-    return max(count_attribut.keys())[0]
+    return max(count_attribut.keys())
+
+
 
 
 def print_classified_vector(distance, smallest, k):
@@ -63,22 +65,23 @@ def knn_classification(training_data, testing_data, k):
             for vec2 in training_data_vectors:
                 for k2, v2 in vec2.items():
                     distance = euclidean_distance(k1, k2)
-                    distance_dict[distance] = tuple([v1, "Treningowy: " + v2])
+                    distance_dict[distance] = tuple([v1, v2])
             k_smallest = get_k_smallest(distance_dict, k)
-            print("Dla wiersza ", i, " -> ", (k_smallest), print_classified_vector(distance_dict, k_smallest, k))
-            print("Wyliczony kwiatek -> ", get_verdiction(k_smallest, distance_dict, k))
+           ## print("Dla wiersza ", i, " -> ", k_smallest, print_classified_vector(distance_dict, k_smallest, k))
+            print("Wyliczony kwiatek -> ", get_verdiction(k_smallest, distance_dict, k)[1])
             print("Kwiatek z listy testowej -> ", v1)
             print("")
-            classifications[i] = (v1 == get_verdiction(k_smallest, distance_dict, k))
+            classifications[i] = (v1 == get_verdiction(k_smallest, distance_dict, k)[1])
             i = i + 1
             distance_dict = {}
 
     positive_classification = 0
-    for i in classifications:
-        if i:
-            positive_classification = positive_classification + 1
+    for k, v in classifications.items():
+        if v:
+            positive_classification = 1 + positive_classification
 
-    return len(classifications) / positive_classification
+
+    return positive_classification / len(classifications)
 
 
 training_data = read_data("iris_training.txt")
@@ -86,4 +89,4 @@ testing_data = read_data("iris_test.txt")
 
 k = input("Input value of K.")
 
-print("\nZgodność na poziomie:", knn_classification(training_data, testing_data, int(k)) * 100, "%")
+print("\nZgodność na poziomie:", knn_classification(training_data, testing_data, int(k))*100)
