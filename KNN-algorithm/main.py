@@ -68,8 +68,8 @@ def knn_classification(training_data, testing_data, k):
                     distance_dict[distance] = tuple([v1, v2])
             k_smallest = get_k_smallest(distance_dict, k)
            ## print("Dla wiersza ", i, " -> ", k_smallest, print_classified_vector(distance_dict, k_smallest, k))
-            print("Wyliczony kwiatek -> ", get_verdiction(k_smallest, distance_dict, k)[1])
-            print("Kwiatek z listy testowej -> ", v1)
+            print("Classification based on training data -> ", get_verdiction(k_smallest, distance_dict, k)[1])
+            print("input data -> ", v1)
             print("")
             classifications[i] = (v1 == get_verdiction(k_smallest, distance_dict, k)[1])
             i = i + 1
@@ -87,6 +87,14 @@ def knn_classification(training_data, testing_data, k):
 training_data = read_data("iris_training.txt")
 testing_data = read_data("iris_test.txt")
 
-k = input("Input value of K.")
+k = input("Input value of K: ")
 
-print("\nZgodność na poziomie:", knn_classification(training_data, testing_data, int(k))*100)
+print("\nAccuracy level:", knn_classification(training_data, testing_data, int(k))*100)
+while True:
+    vector = input("\n\nInput vector in the form:\n-------------------------\n 5.1  3.5  1.4  0.2 ...\n-------------------------\nInput:")
+    vector = vector + " vector"
+    k = input("Input value of K:")
+    print("\n------------------------------------------------------------------------")
+    print("Accuracy level:", knn_classification(training_data, vector, int(k))*100, "\n------------------------------------------------------------------------")
+
+
