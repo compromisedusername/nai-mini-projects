@@ -42,8 +42,20 @@ def get_verdiction(sorted_list_of_distance, k):
             count_attribut[data] = 1
         else:
             count_attribut[data] += 1
-    print('classified: ',max(count_attribut.keys()), )
-    return max(count_attribut.keys())
+
+
+    classified_data = ""
+    max_count = 0
+
+    sorted_count_attribut = sorted(count_attribut.items(), key=lambda x: (x[1], x[0]))
+
+    for v,k in sorted_count_attribut:
+        if k > max_count:
+            max_count = k
+            classified_data = v
+        print(v,k, "<-----ELEMENTY")
+    print(classified_data,"<-----CLASSIFIED, ELEMENTS: ", max_count)
+    return classified_data
 
 
 
@@ -67,6 +79,7 @@ def knn_classification(training_data, testing_data, k):
             classified_output = get_verdiction(list_of_distance, k)
 
             classifications[i] = (v1 == classified_output)
+            print("Testing data: " ,v1,", Classified data: ", classified_output)
             i = i + 1
             list_of_distance = []
     positive_classification = 0
@@ -77,7 +90,7 @@ def knn_classification(training_data, testing_data, k):
 
 print("INPUT --> input your own vector")
 print("EXIT --> use file")
-training_data = read_data("iris_training_T.txt")
+training_data = read_data("iris_training.txt")
 testing_data = read_data("iris_test.txt")
 while True:
     k = input("Input value of K [or type input]: ")
