@@ -1,5 +1,6 @@
 import math
 import os
+import random
 
 
 def read_data(file):
@@ -26,16 +27,33 @@ def make_vectors(data):
     return vector
 
 
-def count_weights(training_data_vectors):
-    W = []
-    for i in (training_data_vectors[0].keys()):
-        for j in i:
-            W.append(0)
-    for vector in training_data_vectors:
-        for v,k in vector.items():
-            print(vector)
-    
+def dot_product(w, t):
+    print(1,2)
 
+def sum_vectors(w,t):
+    new_w = []
+    for i in range(len(w)):
+        new_w.append(w[i]+t[i])
+
+def new_weight(w,t,alfa):
+    for
+
+    return new_w
+def count_weights(training_data_vectors, alfa):
+    W = []
+    for i in (training_dot_product(W,v)data_vectors[0].keys()):
+        for j in i:
+            W.append(random.uniform(-1, 1))
+
+    for vector in training_data_vectors:
+        for v, k in vector.items():
+            d_product = dot_product(W, v)
+            if(d_product)<=0:
+                W = sum_vectors(W,
+
+    badOutput = True
+    if(badOutput):
+        dot_product(W, training_data_vectors)
 
     print(W)
     pass
@@ -47,8 +65,7 @@ def delta_algorithm(training_data, testing_data, alfa):
     ## utworzenie wektorow
 
     ##przeleciec przez zbior treningowy, majac output robimy tak -> jesli atrybut dec jest zgodny z wyliczonym, to nie zmieniamy, a jesli jest zly, to zmieniamy.
-    W = count_weights(training_data_vectors)
-
+    W = count_weights(training_data_vectors, alfa)
 
     return 1
 
@@ -60,8 +77,8 @@ def delta_algorithm(training_data, testing_data, alfa):
 ##print('\nFILES in {cwd} :\n--------------------')
 
 ##for filename in os.listdir(cwd):
-    ##    if (filename.endswith(".txt")):
-        ##print(filename)
+##    if (filename.endswith(".txt")):
+##print(filename)
 print("--------------------\n")
 ##file_training = input("Input training file name [Or type enter to use standard set]:")
 ##file_testing = input("Input testing file name [Or type enter to use standard set]:")
@@ -83,25 +100,25 @@ with open(file_training, "r") as f:
     dimension = len(line.split()) - 1
 while True:
 
-   ## alfa = input("-------DATA FROM FILES-------\nInput value of alfa -> (0,1) [or type input]: ")
+    ## alfa = input("-------DATA FROM FILES-------\nInput value of alfa -> (0,1) [or type input]: ")
     ##if alfa != "input":
-        print("\nAccuracy level:", delta_algorithm(training_data, testing_data, 1) * 100)
+    print("\nAccuracy level:", delta_algorithm(training_data, testing_data, 1) * 100)
     ##else:
-        while True:
+    while True:
 
-            print("\nVector must be in ", dimension, "dimension!")
-            vector = input(f"Input vector in the form:\n-------------------------\n [EXAMPLE] --> : 5.1  3.5 ... "
-                           "\n-------------------------\nInput values [{dimension}-DIMENSIONS] [or type exit]: ")
-            if vector == "exit":
-                break
-            while (len(vector.split())) != dimension:
-                print("Vector must be in ", dimension, "dimension!")
-                vector = input("Input vector: ")
+        print("\nVector must be in ", dimension, "dimension!")
+        vector = input(f"Input vector in the form:\n-------------------------\n [EXAMPLE] --> : 5.1  3.5 ... "
+                       "\n-------------------------\nInput values [{dimension}-DIMENSIONS] [or type exit]: ")
+        if vector == "exit":
+            break
+        while (len(vector.split())) != dimension:
+            print("Vector must be in ", dimension, "dimension!")
+            vector = input("Input vector: ")
 
-            vector = vector + " vector"
-            alfa = input("Input value of K [or type exit]: ")
-            if alfa == "exit":
-                break
-            print("\nCLASSIFICATION:---------------------------------------------------------")
-            delta_algorithm(training_data, vector, int(alfa))
-            print("\nEND---------------------------------------------------------------------")
+        vector = vector + " vector"
+        alfa = input("Input value of K [or type exit]: ")
+        if alfa == "exit":
+            break
+        print("\nCLASSIFICATION:---------------------------------------------------------")
+        delta_algorithm(training_data, vector, int(alfa))
+        print("\nEND---------------------------------------------------------------------")
