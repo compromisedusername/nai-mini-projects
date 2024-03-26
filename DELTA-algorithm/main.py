@@ -57,7 +57,7 @@ def new_weight(w, t, alfa, decision_factor):
 def calculate_weights(training_data_vectors, alfa, classname, weight):
     weights_not_change = 0
     old_weight = []
-    while weights_not_change < 10:
+    while weights_not_change < 1:
         for vector in training_data_vectors:
             for v, k in vector.items():
                 old_weight = weight
