@@ -4,7 +4,6 @@ import translators as ts
 from wonderwords import RandomSentence
 
 
-
 amount_of_docmunets_in_one_language = 10
 data_amount = 10
 SentenceGenerator = RandomSentence()
@@ -30,7 +29,19 @@ for elem in language_list:
             count = count + 1
 
 #create folder
-folder = 'data'
+folder = 'data_training'
+if not os.path.exists(folder):
+    os.mkdir(folder)
+#save files with text
+for elem in text_lists_for_languages:
+    language_folder = folder + "/" +elem[1]
+    file = elem[0]
+    if not os.path.exists(language_folder):
+        os.makedirs(language_folder)
+    with open(language_folder+"/"+file,"w", encoding="utf-8") as f:
+       f.write(text_lists_for_languages[elem])
+
+folder = 'data_testing'
 if not os.path.exists(folder):
     os.mkdir(folder)
 #save files with text

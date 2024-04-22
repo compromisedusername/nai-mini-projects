@@ -10,7 +10,7 @@ def read_data(file):
     return tekst
 
 
-def make_vector(data, attirbute):
+def make_vector(data, attirbute = "-"):
     dict = {}
     vector = []
     letters = "abcdefghijklmnopqrstuvwxyz"
@@ -76,21 +76,20 @@ def new_weight(w, t, alfa, decision_factor):
 
 def calculate_weights(training_data_vectors, alfa, classname, weight):
 
-    miss = 1
-    while(miss > 0):
-        miss = 0
+    missed_classifications = 1
+    while(missed_classifications > 0):
+        missed_classifications = 0
         for vector in training_data_vectors:
             for v, k in vector.items():
-                old_weight = weight
                 net = dot_product(weight, v)
                 if ((net >= 0) & (k != classname)):
                     weight = new_weight(weight, v, alfa, -1)
                     print( "For ",k, " output 1, but attribute is  ",classname, "NET VALUE: ",net)
-                    miss += 1
+                    missed_classifications += 1
                 elif ((net < 0) & (k == classname)):
                     weight = new_weight(weight, v, alfa, 1)
                     print( "For ",k, " output 0, but attribute is ",classname, "NET VALUE: ",net)
-                    miss += 1
+                    missed_classifications += 1
     return weight
 
 
@@ -98,7 +97,7 @@ def calculate_weights(training_data_vectors, alfa, classname, weight):
 
 def layer_perceptron(alfa):
 
-    training_data_vectors = make_vectors("data")
+    training_data_vectors = make_vectors("data_training")
     testing_data_vectors = make_vectors("data_testing")
 
     random_weights = []
@@ -109,7 +108,7 @@ def layer_perceptron(alfa):
     classifications = 1
     data_rows = 1
 
-    for language in os.listdir("data"):
+    for language in os.listdir("data_training"):
         weights[language] = calculate_weights(training_data_vectors, alfa, language, random_weights) ## mamy policzone wagi
     for vector in testing_data_vectors:
         for v, k in vector.items():
@@ -119,7 +118,7 @@ def layer_perceptron(alfa):
             language, max_val = max(dot_products.items(), key=lambda item: item[1])
             if(k == language):
                 classifications += 1
-                print(k,max_val, "classified as", language )
+            print(k,max_val, "classified as", language )
             data_rows += 1
     print("Accuracy: ", (classifications / data_rows)*100, "%")
     return weights
@@ -127,4 +126,32 @@ def layer_perceptron(alfa):
 
 
 
-(layer_perceptron(0.05))
+def classify_input_text(weights):
+    text = []
+    print("Enter/Paste your text. Press Ctrl-D to finish the current session of input.")
+    while True:
+        try:
+            line = input()
+            if line.strip() == ":q":
+                print("Exiting program.")
+        except EOFError:
+            print("End of current input session.")
+            break
+        text.append(line)
+
+
+    print(text)
+    input_text_vector = make_vector(text)
+    for vector in input_text_vector:
+            dot_products = {}
+            for weight in weights.items():
+                dot_products[weight[0]] = (dot_product(vector, weight[1]))
+            language, max_val = max(dot_products.items(), key=lambda item: item[1])
+            print( max_val, " Given text classified as: ", language)
+
+
+
+
+
+calculated_weights = layer_perceptron(0.05)
+classify_input_text(calculated_weights)
