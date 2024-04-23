@@ -75,10 +75,11 @@ def new_weight(w, t, alfa, decision_factor):
 
 
 def calculate_weights(training_data_vectors, alfa, classname, weight):
-
+    epoki = 1
     missed_classifications = 1
     while(missed_classifications > 0):
         missed_classifications = 0
+        epoki += 1
         for vector in training_data_vectors:
             for v, k in vector.items():
                 net = dot_product(weight, v)
@@ -90,6 +91,7 @@ def calculate_weights(training_data_vectors, alfa, classname, weight):
                     weight = new_weight(weight, v, alfa, 1)
                     print( "For ",k, " output 0, but attribute is ",classname, "NET VALUE: ",net)
                     missed_classifications += 1
+    print(epoki, "TYLE EPOK")
     return weight
 
 
