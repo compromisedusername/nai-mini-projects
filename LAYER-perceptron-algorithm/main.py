@@ -111,7 +111,7 @@ def layer_perceptron(alfa):
     for language in os.listdir("data_training"):
         weights[language] = calculate_weights(training_data_vectors, alfa, language, random_weights) ## mamy policzone wagi
     for vector in testing_data_vectors:
-        for v, k in vector.items():
+        for v, k in vector.items(): #weight0 ->
             dot_products = {}
             for weight in weights.items():
                 dot_products[weight[0]]=(dot_product(v,weight[1]))
