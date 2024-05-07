@@ -44,15 +44,14 @@ def kmeans_algorithm(vectors):
                 distances.append([vec, distance, cluster_number])
                 if cluster_number in clusters:
                     new_centroid = calculate_new_centroid(clusters[cluster_number])
-                    if centroids[cluster_number] != new_centroid: # zmiany odleglosci
+                    if centroids[cluster_number] == new_centroid: # zmiany odleglosci
                         changes += 1
-                        print("ZMIANY: ",changes)
                     centroids[cluster_number] = new_centroid # aktualizujemy centroid
+                    print(new_centroid, "NOWY CENTROID")
 
 
 
             min_distance = min(distances, key=lambda x: x[1])
-            old_square_distance = square_distances
             square_distances += min_distance[1]
 
             print(square_distances, "SQUARE DISTANCE")
@@ -64,12 +63,11 @@ def kmeans_algorithm(vectors):
             else:
                 clusters[cluster_id].append(min_distance)
 
-            if changes >= k_groups:
+            if changes >= k_groups-1:
                 return clusters
 
 
 def calculate_new_centroid(c):
-    print(c, "CALCULATE NEW CENTROID")
     cluster = []
     for i,j,k in c:
         cluster.append(i)

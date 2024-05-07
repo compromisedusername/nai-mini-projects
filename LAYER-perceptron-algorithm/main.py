@@ -47,7 +47,6 @@ def make_vectors(dir):
 
 
 
-
 def dot_product(w, t):
     dot_factor = 0.0
     for i in range(0, len(w)):
