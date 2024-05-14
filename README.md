@@ -1,2 +1,2 @@
-# ppy-mini-projekty
-Simple AI algorithms implementation
+
+# Simple AI algorithms implementation
