@@ -101,12 +101,15 @@ def naive_bayes_classification(training_data, testing_data):
     smoothed_probabilites = probabilites(make_vectors(training_data))[0]
 
     classified_output = 0
-    classifications = {} ## klasyfikacje dla danych testowych
+    classifications = 0 ## klasyfikacje dla danych testowych
+    bad_classifications = 0
+    attribute = ""
     i = 1
     for vec1 in testing_data_vectors: # dla kazdego wektora testowego ...
         probability_every_attribute = {}
         for attribute_c, amount_count in attribute_count.items(): # dla kazdego atrybutu ze zbioru atrybutow i ich wystapien...
             for vector_test, attribute_v in vec1.items(): # dla kazdej wartosci i atrybutu ze zbioru testowego ...
+                attribute = attribute_v
                 for i in range(0, len(vector_test)): # klucz i wartosci w slowniku ktory przechowuje  pod kluczem [ 'i' 'val' 'attribute' ] ich ilosci wystapien *i to nr kolumny*
                         key = str(i)+str(vector_test[i]) + str(attribute_c)
                         if key in smoothed_probabilites:
@@ -120,7 +123,16 @@ def naive_bayes_classification(training_data, testing_data):
                             else:
                                 probability_every_attribute[attribute_c] *= (1/attribute_count[attribute_c])
         print(probability_every_attribute)
+        max_value = max(probability_every_attribute.items(), key=lambda x: x[1])
+        print(attribute, "-> CLASSIFIED AS: ", max_value[0])
+        if max_value[0] == attribute:
+            classifications += 1
+        else:
+            bad_classifications += 1
 
+        print("Precision: ", classifications / (classifications + bad_classifications))
+        print("Fulfilness: ", classifications / (classifications ))
+    return classifications/len(testing_data_vectors)
 
 def main():
     print("INPUT --> input your own vector")
@@ -165,7 +177,7 @@ def main():
                 vector = input("Input vector: ")
 
             vector = vector + " vector"
-            k = input("Input value of K [or type exit]: ")
+            k = input("Type exit to exit: ")
             if k == "exit":
                 break
             print("\nCLASSIFICATION:---------------------------------------------------------")
