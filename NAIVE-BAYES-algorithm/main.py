@@ -104,6 +104,8 @@ def naive_bayes_classification(training_data, testing_data):
     classifications = 0 ## klasyfikacje dla danych testowych
     bad_classifications = 0
     attribute = ""
+    confusion_matrix = {}
+    matrixin_classifcation = {}
     i = 1
     for vec1 in testing_data_vectors: # dla kazdego wektora testowego ...
         probability_every_attribute = {}
@@ -122,16 +124,37 @@ def naive_bayes_classification(training_data, testing_data):
                                 probability_every_attribute[attribute_c] = (1/attribute_count[attribute_c])
                             else:
                                 probability_every_attribute[attribute_c] *= (1/attribute_count[attribute_c])
+
+
         print(probability_every_attribute)
         max_value = max(probability_every_attribute.items(), key=lambda x: x[1])
         print(attribute, "-> CLASSIFIED AS: ", max_value[0])
+
+
+        if attribute not in confusion_matrix:
+            confusion_matrix[attribute] = {max_value[0]: 1}
+        else:
+            if max_value[0] not in confusion_matrix[attribute]:
+                confusion_matrix[attribute][max_value[0]] = 1
+            else:
+                confusion_matrix[attribute][max_value[0]] += 1
+
         if max_value[0] == attribute:
             classifications += 1
         else:
             bad_classifications += 1
 
-        print("Precision: ", classifications / (classifications + bad_classifications))
-        print("Fulfilness: ", classifications / (classifications ))
+    precision = len(testing_data_vectors) /( len(testing_data_vectors) + classifications )
+    fulfilnes = len(testing_data_vectors) / ( len(testing_data_vectors) + bad_classifications)
+    print("Precision: ", precision)
+    print("Fulfilness: ", fulfilnes)
+    print("F-measure: ", (2 * precision * fulfilnes) / (precision + fulfilnes))
+    print("Confusion Matrix:")
+    for true_class, predictions in confusion_matrix.items():
+        print("Class:", true_class)
+        for predicted_class, count in predictions.items():
+            print("\tPredicted class:", predicted_class, "Count:", count)
+
     return classifications/len(testing_data_vectors)
 
 def main():
