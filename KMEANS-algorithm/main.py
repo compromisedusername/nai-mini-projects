@@ -1,3 +1,4 @@
+import math
 import os
 import random
 
@@ -125,17 +126,26 @@ def make_initial_centroids_kmeansplusplus(k, vectors):
 
 
 def process_results(result):
-    for elem in result.items():
+    for cluster_id, cluster_data in result.items():
         attributes = {}
-        print("Cluster ID:", elem[0], ", Size: ", len(elem[1]))
-        for vec in elem[1]:
+        print("Cluster ID:", cluster_id, ", Size:", len(cluster_data))
+
+        for vec in cluster_data:
             if vec[3] not in attributes:
                 attributes[vec[3]] = 1
             else:
                 attributes[vec[3]] += 1
-        print("Entropy: ")
-        for flower,amount in attributes.items():
-            print(flower, ": ", (amount/len(elem[1])) * 100, "%")
+
+        entropy = 0
+        total_instances = len(cluster_data)
+        for attribute_count in attributes.values():
+            probability = attribute_count / total_instances
+            entropy -= probability * math.log2(probability)
+
+        print("Entropy:", entropy)
+        print("Attribute distribution:")
+        for attribute, count in attributes.items():
+            print(attribute, ":", (count / total_instances) * 100, "%")
         print()
 
 
